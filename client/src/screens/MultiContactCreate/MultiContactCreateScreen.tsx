@@ -48,7 +48,7 @@ export default function MultiContactCreateScreen() {
         }
       });      
       setIsSending(true);
-      const response = await axios.post('http://localhost:3000/mailchimp/a95aa251cf/batch-members', data); // .slice(0, 74)
+      const response = await axios.post('http://localhost:3000/mailchimp/34d0ac8d7f/batch-members', data); // .slice(0, 74)
     } catch (error) {
       throw new Error('Failed to save contact block in Mailchimp');
     } finally {

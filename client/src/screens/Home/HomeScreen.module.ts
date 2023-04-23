@@ -56,6 +56,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginTop: 20,
+  },
+  noMembers: {
+    margin: 'auto',
   }
 });
 

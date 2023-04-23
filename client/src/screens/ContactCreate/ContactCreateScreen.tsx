@@ -33,6 +33,7 @@ type Props = {
 };
 
 export default function ContactCreateScreen ({ navigation }: Props)  {
+  const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState<ContactFormData>({
     email: '',
     firstName: '',
@@ -95,25 +96,34 @@ export default function ContactCreateScreen ({ navigation }: Props)  {
   };
 
   const handleSubmit = async () => {
+    const { email } = formData;
     try {
-      const response = await axios.post('http://localhost:3000/mailchimp/a95aa251cf/members', formData);
-      setFormData({
-        email: '',
-        firstName: '',
-        lastName: '',
-        address: {
-          addr1: '',
-          addr2: '',
-          city: '',
-          state: '',
-          country: '',
-          zip: '',
-        },
-        phoneNumber: ''
-      })
-      navigation.navigate('HomeScreen');
+      // Verificar si el correo electrónico ya existe en la lista de miembros
+      const res = await axios.get(`http://localhost:3000/mailchimp/34d0ac8d7f/members/${email}`);
+      if (res.data.status === 404) {
+        // El correo electrónico no existe, por lo que podemos agregar el nuevo contacto
+        const response = await axios.post('http://localhost:3000/mailchimp/34d0ac8d7f/members', formData);
+        setFormData({
+          email: '',
+          firstName: '',
+          lastName: '',
+          address: {
+            addr1: '',
+            addr2: '',
+            city: '',
+            state: '',
+            country: '',
+            zip: '',
+          },
+          phoneNumber: ''
+        })
+        navigation.navigate('HomeScreen');
+      } else {
+        // El correo electrónico ya existe, establecer el mensaje de error
+        setErrorMessage('The e-mail already exists in the members list.');
+      }
     } catch (error) {
-      throw new Error('Failed to create contact');
+      throw new Error('Contact could not be created');
     }
   };
 
@@ -200,6 +210,7 @@ export default function ContactCreateScreen ({ navigation }: Props)  {
     />
   </View>
 
+  {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
   <TouchableOpacity
     style={[styles.submitButton, isFormComplete ? styles.submitButtonEnabled : styles.disabledButton]}
     onPress={handleSubmit}

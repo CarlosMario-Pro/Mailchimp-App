@@ -6,13 +6,19 @@ import { UpdateMailchimpDto } from './dto/update-mailchimp.dto';
 @Injectable()
 export class MailchimpService {
   async getAllLists() {
-    const response = await mailchimp.lists.getAllLists();
-    return response;
+    try {
+      const response = await mailchimp.lists.getAllLists();
+      return response;
+    } catch (error) {
+      throw new Error('Failed to bring the meta-information from your lists');
+    }
   }
 
   async getListMembersInfo(listId: string) {
     try {
-      const response = await mailchimp.lists.getListMembersInfo(listId);
+      const response = await mailchimp.lists.getListMembersInfo(listId, {
+        count: 120,
+      });
       return response;
     } catch (err) {
       throw new Error(`Unable to get list members: ${err.message}`);
@@ -30,6 +36,13 @@ export class MailchimpService {
 
   async addListMember(listId: string, createMailchimpDto: CreateMailchimpDto) {
     try {
+      const searchResult = await mailchimp.searchMembers.search(listId, {
+        query: createMailchimpDto.email,
+      });
+      if (searchResult.exact_matches.members.length > 0) {
+        return 'ya existe el correo';
+      }
+
       const memberData = {
         email_address: createMailchimpDto.email,
         status: 'subscribed', // Debe de ir

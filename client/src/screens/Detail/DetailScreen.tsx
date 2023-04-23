@@ -40,7 +40,7 @@ export default function DetailScreen ({ route, navigation }: Props) {
           setIsLoading(false);
           return null;
         }
-        const response = await axios.get(`http://localhost:3000/mailchimp/a95aa251cf/members/${memberId}`);
+        const response = await axios.get(`http://localhost:3000/mailchimp/34d0ac8d7f/members/${memberId}`);
         if (!response.data) {
           setIsLoading(false);
           return null;

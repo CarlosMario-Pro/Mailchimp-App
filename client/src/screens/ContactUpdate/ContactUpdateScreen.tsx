@@ -96,7 +96,7 @@ export default function ContactUpdateScreen ({ route, navigation }: Props)  {
   
   const handleSubmit = async () => {
     try {
-      const response = await axios.put(`http://localhost:3000/mailchimp/a95aa251cf/members/${memberId}`, formData);
+      const response = await axios.put(`http://localhost:3000/mailchimp/34d0ac8d7f/members/${memberId}`, formData);
       setFormData({
         email: '',
         firstName: '',

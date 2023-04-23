@@ -23,7 +23,7 @@ export default function HomeScreen({ navigation }: Props) {
   useEffect(() => {
     const getListMembers = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/mailchimp/a95aa251cf/members`);
+        const response = await axios.get(`http://localhost:3000/mailchimp/34d0ac8d7f/members`);
         // const response = await axios.get(`http://localhost:3000/mailchimp/${LIST_ID}/members`);
         setListMembers(response.data.members);
         setIsLoading(false);
@@ -36,7 +36,7 @@ export default function HomeScreen({ navigation }: Props) {
 
   const handleDeleteMember = async (memberId: string) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/mailchimp/a95aa251cf/members/${memberId}`);
+      const response = await axios.delete(`http://localhost:3000/mailchimp/34d0ac8d7f/members/${memberId}`);
       if (response.status === 204) {
         setListMembers(listMembers.filter(member => member.id !== memberId));
       }
@@ -108,7 +108,7 @@ export default function HomeScreen({ navigation }: Props) {
             style={styles.flatListContainer}
           />
         ) : (
-          <Text>No members found.</Text>
+          <Text style={styles.noMembers}>No members found.</Text>
         )}
       </View>
     </View>
